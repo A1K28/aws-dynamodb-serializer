@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class DeserializerTest {
 
     @Test
@@ -23,7 +26,7 @@ class DeserializerTest {
                     "S": ""
                   },
                   "INITIALIZED": {
-                    "BOOL": false
+                    "BOOL": true
                   },
                   "LAST_UPDATED_AT": {
                     "S": "2024-11-17T21:52:45.087714"
@@ -127,6 +130,17 @@ class DeserializerTest {
                 """;
         Map map = new ObjectMapper().readValue(request, Map.class);
         RequestItem item = Deserializer.deserialize(map, RequestItem.class);
-        String asd = "asdawd";
+
+        assertTrue(item.getInitialized());
+        assertEquals("de2be9fc-bf77-4837-b4c6-4d25389f42bb", item.getId());
+        assertEquals("2024-11-17T21:52:45.087714", item.getCreatedAt());
+        assertEquals(1, item.getPage());
+        assertEquals(1, item.getNPages());
+        assertEquals(3, item.getProperties().size());
+        assertTrue(item.getProperties().get(1).getActive());
+        assertEquals(2, item.getProperties().get(1).getXpaths().size());
+        assertEquals("xpath1", item.getProperties().get(1).getXpaths().getFirst());
+        assertEquals("xpath2", item.getProperties().get(1).getXpaths().getLast());
+        assertEquals(0, item.getTryCount());
     }
 }
