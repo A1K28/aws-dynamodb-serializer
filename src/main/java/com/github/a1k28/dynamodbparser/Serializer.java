@@ -73,7 +73,7 @@ final class Serializer extends AbstractProcessor {
         if (clazz.isPrimitive())
             clazz = Array.get(Array.newInstance(clazz,1),0).getClass();
 
-        if (Number.class.isAssignableFrom(clazz)) return parseNum(object, clazz);
+        if (Number.class.isAssignableFrom(clazz)) return String.valueOf(object);
         if (String.class.isAssignableFrom(clazz)) return String.valueOf(object);
         if (Boolean.class.isAssignableFrom(clazz)) return Boolean.parseBoolean(String.valueOf(object));
         if (Character.class.isAssignableFrom(clazz)) return object;
