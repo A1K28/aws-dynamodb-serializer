@@ -1,10 +1,10 @@
-package com.github.a1k28.dynamodbparser.model;
+package com.github.a1k28.dynamodbparser;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public enum Type {
+enum Type {
     STRING("S", true),
     BOOLEAN("BOOL", true),
     NUMBER("N", true),

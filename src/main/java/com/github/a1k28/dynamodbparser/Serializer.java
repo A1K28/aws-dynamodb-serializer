@@ -1,7 +1,6 @@
 package com.github.a1k28.dynamodbparser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.a1k28.dynamodbparser.model.Type;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -12,10 +11,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class Serializer extends AbstractProcessor {
-    private Serializer() {}
+final class Serializer extends AbstractProcessor {
+    private Serializer() {
+    }
+    static <T> Map serialize(T object) throws IllegalAccessException, InvocationTargetException, JsonProcessingException {
+        return serialize(object, false);
+    }
 
-    public static <T> Map serialize(T object) throws IllegalAccessException, InvocationTargetException, JsonProcessingException {
+    private static <T> Map serialize(T object, boolean wrapObject) throws IllegalAccessException, InvocationTargetException, JsonProcessingException {
+        if (object == null) return null;
         Class<T> clazz = (Class<T>) object.getClass();
 
         Object simpleValue = simpleValue(object, clazz);
@@ -48,14 +52,19 @@ public final class Serializer extends AbstractProcessor {
                     List<Map> list = new ArrayList();
                     List L = (List) res;
                     for (Object o : L) {
-                        list.add(serialize(o));
+                        list.add(serialize(o, true));
                     }
                     instance.put(name, type.createObject(list));
                 } else {
-                    Object r = serialize(res);
+                    Object r = serialize(res, true);
                     instance.put(name, type.createObject(r));
                 }
             }
+        }
+
+        if (wrapObject) {
+            Type type = Type.getProperty(clazz);
+            return type.createObject(instance);
         }
         return instance;
     }

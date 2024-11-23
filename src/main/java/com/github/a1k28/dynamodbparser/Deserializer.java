@@ -1,7 +1,5 @@
 package com.github.a1k28.dynamodbparser;
 
-import com.github.a1k28.dynamodbparser.model.Type;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -10,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public final class Deserializer extends AbstractProcessor {
+final class Deserializer extends AbstractProcessor {
     private static final Logger log = Logger.getInstance(Deserializer.class);
 
     private Deserializer() {}
 
-    public static <T> T deserialize(Map<?,?> object, Class<T> clazz)
+    static <T> T deserialize(Map<?,?> object, Class<T> clazz)
             throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Type property = Type.getProperty(object);
         if (property != null) {

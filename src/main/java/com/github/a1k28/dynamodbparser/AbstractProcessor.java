@@ -1,13 +1,10 @@
 package com.github.a1k28.dynamodbparser;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.a1k28.dynamodbparser.model.Type;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
