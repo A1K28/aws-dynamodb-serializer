@@ -29,6 +29,8 @@ enum Type {
 
     public Map createObject(Object value) {
         Map map = new LinkedHashMap();
+        if (this == NUMBER && value != null && Number.class.isAssignableFrom(value.getClass()))
+            value = String.valueOf(value);
         map.put(this.value, value);
         return map;
     }
