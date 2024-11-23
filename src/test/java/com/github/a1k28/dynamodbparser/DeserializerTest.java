@@ -1,8 +1,9 @@
-package com.github.a1k28.dynamodbparser.deserializer;
+package com.github.a1k28.dynamodbparser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.a1k28.dynamodbparser.Deserializer;
-import com.github.a1k28.dynamodbparser.deserializer.model.RequestItem;
+import com.github.a1k28.dynamodbparser.model.RequestItem;
+import com.github.a1k28.dynamodbparser.model.Status;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -142,5 +143,6 @@ class DeserializerTest {
         assertEquals("xpath1", item.getProperties().get(1).getXpaths().getFirst());
         assertEquals("xpath2", item.getProperties().get(1).getXpaths().getLast());
         assertEquals(0, item.getTryCount());
+        assertEquals(Status.ACTIVE, item.getStatus());
     }
 }

@@ -1,6 +1,7 @@
-package com.github.a1k28.dynamodbparser.deserializer.model;
+package com.github.a1k28.dynamodbparser.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class RequestItem {
     @JsonProperty("ID")
     private String id;
@@ -24,6 +26,9 @@ public class RequestItem {
     @JsonProperty("TRY_COUNT")
     private Integer tryCount;
 
+    @JsonProperty("STATUS")
+    private Status status;
+
     @JsonProperty("INITIALIZED")
     private Boolean initialized;
 
@@ -34,7 +39,7 @@ public class RequestItem {
     private Integer nPages;
 
     @JsonProperty("PROPERTIES")
-    private List<com.github.a1k28.dynamodbparser.deserializer.model.ItemProperty> properties;
+    private List<ItemProperty> properties;
 
     // 2024-11-17T21:52:45.087714
     @JsonProperty("CREATED_AT")

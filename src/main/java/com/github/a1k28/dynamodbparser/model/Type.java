@@ -1,11 +1,12 @@
 package com.github.a1k28.dynamodbparser.model;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public enum Type {
     STRING("S", true),
-    BOOLEAN("Bool", true),
+    BOOLEAN("BOOL", true),
     NUMBER("N", true),
     LIST("L", false),
     MAP("M", false); // default
@@ -26,14 +27,19 @@ public enum Type {
         return this.end;
     }
 
-    public Object createObject(Object value) {
-        return switch (this) {
-            case STRING -> new TypeString(value == null ? null : (String) value);
-            case BOOLEAN -> new TypeBool(value == null ? null : (Boolean) value);
-            case NUMBER -> new TypeNumber(value == null ? null : (Number) value);
-            case LIST -> new TypeList<>(value == null ? null : (List) value);
-            case MAP -> new TypeObject<>(value == null ? null : (Map) value);
-        };
+    public Map createObject(Object value) {
+        Map map = new LinkedHashMap();
+        map.put(this.value, value);
+        return map;
+    }
+
+    public static Type getProperty(Class clazz) {
+        if (String.class.isAssignableFrom(clazz)) return STRING;
+        if (clazz.isEnum()) return STRING;
+        if (Boolean.class.isAssignableFrom(clazz)) return BOOLEAN;
+        if (Number.class.isAssignableFrom(clazz)) return NUMBER;
+        if (List.class.isAssignableFrom(clazz)) return LIST;
+        return MAP;
     }
 
     public static Type getProperty(Map<?,?> map) {
@@ -43,9 +49,6 @@ public enum Type {
     }
 
     private static Type getProperty(String str) {
-//        if (clazz.isPrimitive())
-//            clazz = Array.get(Array.newInstance(clazz,1),0).getClass();
-
         for (Type type : Type.values()) {
             if (type.value.equalsIgnoreCase(str)) return type;
         }
