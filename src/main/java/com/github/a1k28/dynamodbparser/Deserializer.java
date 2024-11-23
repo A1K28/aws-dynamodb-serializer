@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 public final class Deserializer extends AbstractProcessor {
+    private static final Logger log = Logger.getInstance(Deserializer.class);
+
     private Deserializer() {}
 
     public static <T> T deserialize(Map<?,?> object, Class<T> clazz)
@@ -50,8 +52,14 @@ public final class Deserializer extends AbstractProcessor {
 
             Object valObj = parseObject(map, field.getType());
             if (valObj == null) continue;
+
             if (objType.shouldEnd()) {
                 // set value
+                if (!field.getType().isAssignableFrom(valObj.getClass())) {
+                    log.error("Could not match value: " + valObj + " of class: "
+                            + valObj.getClass() + " with field class: " + field.getType());
+                    continue;
+                }
                 method.invoke(instance, valObj);
             } else {
                 if (objType == Type.LIST) {
@@ -84,6 +92,8 @@ public final class Deserializer extends AbstractProcessor {
         if (obj == null) return null;
         if (Number.class.isAssignableFrom(clazz)) return parseNum(obj, clazz);
         if (clazz.isEnum()) return parseEnum(obj, clazz);
+        if (Boolean.class.isAssignableFrom(clazz) || boolean.class.isAssignableFrom(clazz))
+            return Boolean.parseBoolean(String.valueOf(obj));
         return obj;
     }
 }
